@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "vuetifyjs.vuetify-vscode",
+    "vue.volar",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
