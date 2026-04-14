@@ -14,7 +14,6 @@
               {{ t('layout.subtitle') }}
             </div>
             <div class="mt-4 d-flex ga-2">
-              <language-button />
               <v-avatar icon="mdi-pill" size="large"></v-avatar>
               <v-avatar icon="mdi-medication-outline" size="large"></v-avatar>
               <v-avatar icon="mdi-stethoscope" size="large"></v-avatar>
@@ -31,7 +30,11 @@
           class="pa-4 h-100 d-flex align-center justify-center"
         >
           <div style="width: 400px; max-width: 600px">
-            <router-view @loading-change="state.isLoading = $event"></router-view>
+            <router-view v-slot="{ Component, route }" @loading-change="state.isLoading = $event">
+              <v-fade-transition mode="out-in">
+                <component :is="Component" :key="route.path"></component>
+              </v-fade-transition>
+            </router-view>
           </div>
         </v-col>
       </v-row>
@@ -40,7 +43,6 @@
 </template>
 <script setup lang="ts">
   import { reactive } from 'vue';
-  import LanguageButton from '../components/LanguageButton.vue';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   const { t } = useTypedLocale();
   const state = reactive({
