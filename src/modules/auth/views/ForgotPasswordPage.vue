@@ -1,88 +1,90 @@
 <template>
-  <div>
-    <div class="text-medium-emphasis text-center">
-      <v-avatar size="80" variant="flat">
-        <v-img src="@/assets/images/logo.webp" />
-      </v-avatar>
-      <div class="mt-2 mb-8">
-        <div class="font-weight-black text-headline-medium">
-          {{ title }}
-        </div>
-        <div class="font-weight-medium text-body-medium">
-          {{ subtitle }}
+  <v-fade-transition mode="out-in">
+    <div :key="state.step">
+      <div class="text-medium-emphasis text-center">
+        <v-avatar size="80" variant="flat">
+          <v-img src="@/assets/images/logo.webp" />
+        </v-avatar>
+        <div class="mt-2 mb-8">
+          <div class="font-weight-black text-headline-medium">
+            {{ title }}
+          </div>
+          <div class="font-weight-medium text-body-medium">
+            {{ subtitle }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <v-form
-      v-if="state.step === 'request'"
-      ref="formRef"
-      v-model="state.isModelValid"
-      @submit.prevent="handleSubmit"
-    >
-      <v-row density="compact">
-        <v-col cols="12">
-          <v-text-field
-            v-model="modelForm"
-            :label="t('auth.forgotPassword.emailLabel')"
-            prepend-inner-icon="mdi-email-outline"
-            :placeholder="t('auth.forgotPassword.emailPlaceholder')"
-            :rules="formRules"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12">
-          <v-btn-custom block :disabled="!state.isModelValid" type="submit">
-            {{ t('auth.forgotPassword.submit') }}
-          </v-btn-custom>
-        </v-col>
-      </v-row>
-    </v-form>
+      <v-form
+        v-if="state.step === 'request'"
+        ref="formRef"
+        v-model="state.isModelValid"
+        @submit.prevent="handleSubmit"
+      >
+        <v-row density="compact">
+          <v-col cols="12">
+            <v-text-field
+              v-model="modelForm"
+              :label="t('auth.forgotPassword.emailLabel')"
+              prepend-inner-icon="mdi-email-outline"
+              :placeholder="t('auth.forgotPassword.emailPlaceholder')"
+              :rules="formRules"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-btn-custom block :disabled="!state.isModelValid" type="submit">
+              {{ t('auth.forgotPassword.submit') }}
+            </v-btn-custom>
+          </v-col>
+        </v-row>
+      </v-form>
 
-    <div v-if="state.step === 'checkEmail'">
+      <div v-if="state.step === 'checkEmail'">
+        <v-row density="compact">
+          <v-col
+            cols="12"
+            class="font-weight-medium text-body-medium text-medium-emphasis text-center"
+          >
+            {{ t('auth.forgotPasswordCheckEmail.notReceived') }}
+            <v-chip
+              prepend-icon="mdi-refresh"
+              class="font-weight-bold"
+              color="tertiary"
+              @click="handleResendEmail"
+              >{{ t('auth.forgotPasswordCheckEmail.resendEmail') }}</v-chip
+            >
+          </v-col>
+          <v-col cols="12" class="text-center mt-2">
+            <v-btn-custom variant="tonal" block @click="handleUseAnotherEmail">
+              {{ t('auth.forgotPasswordCheckEmail.useAnotherEmail') }}
+            </v-btn-custom>
+          </v-col>
+        </v-row>
+      </div>
+
       <v-row density="compact">
         <v-col
           cols="12"
-          class="font-weight-medium text-body-medium text-medium-emphasis text-center"
+          class="font-weight-medium text-body-medium text-medium-emphasis text-center my-6"
         >
-          {{ t('auth.forgotPasswordCheckEmail.notReceived') }}
-          <v-chip
-            prepend-icon="mdi-refresh"
+          {{ t('auth.forgotPassword.rememberPassword') }}
+          <router-link
             class="font-weight-bold"
-            color="tertiary"
-            @click="handleResendEmail"
-            >{{ t('auth.forgotPasswordCheckEmail.resendEmail') }}</v-chip
+            style="text-decoration: none; color: inherit"
+            :to="{ name: 'login' }"
           >
+            {{ t('auth.forgotPassword.loginLink') }}
+          </router-link>
         </v-col>
-        <v-col cols="12" class="text-center mt-2">
-          <v-btn-custom variant="tonal" block @click="handleUseAnotherEmail">
-            {{ t('auth.forgotPasswordCheckEmail.useAnotherEmail') }}
-          </v-btn-custom>
+        <v-col cols="12" class="text-center text-label-medium text-medium-emphasis">
+          {{ t('auth.forgotPassword.legalText') }}
+        </v-col>
+        <v-col cols="12" class="text-center">
+          <WhatsAppButton />
         </v-col>
       </v-row>
     </div>
-
-    <v-row density="compact">
-      <v-col
-        cols="12"
-        class="font-weight-medium text-body-medium text-medium-emphasis text-center my-6"
-      >
-        {{ t('auth.forgotPassword.rememberPassword') }}
-        <router-link
-          class="font-weight-bold"
-          style="text-decoration: none; color: inherit"
-          :to="{ name: 'login' }"
-        >
-          {{ t('auth.forgotPassword.loginLink') }}
-        </router-link>
-      </v-col>
-      <v-col cols="12" class="text-center text-label-medium text-medium-emphasis">
-        {{ t('auth.forgotPassword.legalText') }}
-      </v-col>
-      <v-col cols="12" class="text-center">
-        <WhatsAppButton />
-      </v-col>
-    </v-row>
-  </div>
+  </v-fade-transition>
 </template>
 <script setup lang="ts">
   import WhatsAppButton from '@/core/components/WhatsAppButton.vue';
