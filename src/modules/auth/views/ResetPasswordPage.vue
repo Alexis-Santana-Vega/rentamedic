@@ -73,7 +73,7 @@
   import { useSwal } from '@/shared/composables/useSwal';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   import { createValidators } from '@/shared/utils/validators';
-  import { computed, reactive } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
 
   const { toast } = useSwal();
@@ -88,7 +88,7 @@
     showConfirmPassword: false,
     isModelValid: false,
   });
-  const modelForm = reactive({
+  const modelForm = ref({
     newPassword: '',
     confirmPassword: '',
   });
@@ -101,7 +101,7 @@
     confirmPassword: [
       v.required(),
       v.maxLength(24, t('auth.resetPassword.confirmPasswordLabel')),
-      (value: string) => value === modelForm.newPassword || t('auth.signup.passwordMismatch'),
+      (value: string) => value === modelForm.value.newPassword || t('auth.signup.passwordMismatch'),
     ],
   }));
   const handleSubmit = (): void => {

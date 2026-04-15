@@ -12,10 +12,9 @@
   </v-card>
 </template>
 <script setup lang="ts">
-  interface Props {
+  defineProps<{
     title?: string;
     subtitle?: string;
     icon?: string;
-  }
-  defineProps<Props>();
+  }>();
 </script>

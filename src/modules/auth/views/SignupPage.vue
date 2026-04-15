@@ -86,7 +86,7 @@
   import WhatsAppButton from '@/core/components/WhatsAppButton.vue';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   import { createValidators } from '@/shared/utils/validators';
-  import { computed, reactive } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
@@ -100,7 +100,7 @@
     showPassword2: false,
     isModelValid: false,
   });
-  const modelForm = reactive({
+  const modelForm = ref({
     fullName: '',
     email: '',
     password: '',
@@ -121,14 +121,14 @@
     confirmPassword: [
       v.required(),
       v.maxLength(24, t('auth.signup.confirmPasswordLabel')),
-      (value: string) => value === modelForm.password || t('auth.signup.passwordMismatch'),
+      (value: string) => value === modelForm.value.password || t('auth.signup.passwordMismatch'),
     ],
   }));
   const handleSignup = (): void => {
     emit('loadingChange', true);
     // Aquí iría la lógica para manejar el registro
     console.log('Registrando con:', modelForm);
-    if (modelForm.password !== modelForm.confirmPassword) {
+    if (modelForm.value.password !== modelForm.value.confirmPassword) {
       alert(t('auth.signup.passwordMismatch'));
       return;
     }

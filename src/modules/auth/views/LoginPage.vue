@@ -84,7 +84,7 @@
   import WhatsAppButton from '@/core/components/WhatsAppButton.vue';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   import { createValidators } from '@/shared/utils/validators';
-  import { computed, reactive } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
@@ -97,7 +97,7 @@
     showPassword: false,
     isModelValid: false,
   });
-  const modelForm = reactive({
+  const modelForm = ref({
     email: '',
     password: '',
     role: '',
@@ -114,7 +114,7 @@
   const handleLogin = (): void => {
     emit('loadingChange', true);
     // Aquí iría la lógica para manejar el inicio de sesión
-    console.log('Iniciando sesión con:', modelForm);
+    console.log('Iniciando sesión con:', modelForm.value);
     setTimeout(() => {
       router.push({ name: 'otpVerification' });
       emit('loadingChange', false);
