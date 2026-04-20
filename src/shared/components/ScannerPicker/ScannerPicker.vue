@@ -29,7 +29,7 @@
           >
           </v-alert>
         </div>
-        <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
+        <div class="position-absolute mt-1 ml-1" style="z-index: 3">
           <v-btn
             v-if="torchSupported"
             variant="text"
@@ -44,7 +44,7 @@
             @click="toggleFullscreen"
           />
         </div>
-        <div class="position-absolute ml-1 mt-1" style="z-index: 3">
+        <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
           <v-btn variant="text" color="white" icon="mdi-close" @click="emit('close')" />
         </div>
         <qrcode-stream
