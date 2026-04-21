@@ -54,8 +54,7 @@ export const authEs = {
     },
     forgotPasswordCheckEmail: {
       title: 'Revisa tu correo',
-      subtitle:
-        'Si el correo existe, recibirás un enlace para restablecer tu contraseña.',
+      subtitle: 'Si el correo existe, recibirás un enlace para restablecer tu contraseña.',
       notReceived: '¿No recibiste el correo?',
       resendEmail: 'Reenviar correo',
       useAnotherEmail: 'Usar otro correo',

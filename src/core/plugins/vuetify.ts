@@ -140,6 +140,7 @@ export default createVuetify({
     },
     VChip: {
       class: 'text-label-medium',
+      color: 'secondary',
       rounded: 'lg',
     },
     VRadioGroup: {

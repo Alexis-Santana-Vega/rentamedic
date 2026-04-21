@@ -2,18 +2,22 @@
   <v-dialog
     :model-value="modelValue"
     persistent
-    scrollable
     :width="width"
     :fullscreen="isCompact"
     transition="slide-y-reverse-transition"
     @update:model-value="emit('update:modelValue', $event)"
   >
-    <v-card :rounded="isCompact ? '0' : 'lg'">
+    <v-card
+      :rounded="isCompact ? '0' : 'lg'"
+      style="aspect-ratio: 2/3"
+      theme="dark"
+      color="background"
+    >
       <!-- Area de camara -->
       <div
         ref="wrapperRef"
         :class="{ fullscreen: isFullscreen }"
-        style="overflow: hidden; aspect-ratio: 2/3; background: #000"
+        style="overflow: hidden; aspect-ratio: 2/3"
         @fullscreenchange="onFullscreenChange"
       >
         <div
@@ -222,10 +226,9 @@
     try {
       emit('detectedCode', scannedCode.value);
     } catch {
-      // Notificación inline en lugar de plugin global
       cameraError.value = t('scanner.errors.codeNotFound');
-      paused.value = false;
     } finally {
+      paused.value = false;
       scannedCode.value = '';
     }
   }

@@ -2,8 +2,8 @@ import type { RouteRecordRaw } from 'vue-router';
 
 const userRoutes: RouteRecordRaw[] = [
   {
-    path: 'users',
-    name: 'users',
+    path: 'user',
+    name: 'user',
     component: () => import('@/modules/user/views/UserPage.vue'),
   },
 ];

@@ -103,7 +103,7 @@
     { title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'category' } },
     //{ title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
     //{ title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },
-    { title: 'Usuarios', icon: 'mdi-account-multiple-outline', to: { name: 'users' } },
+    { title: 'Usuarios', icon: 'mdi-account-multiple-outline', to: { name: 'user' } },
   ];
   const openDrawer = (): void => {
     if (mdAndDown.value) {
