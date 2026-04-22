@@ -44,7 +44,6 @@
         v-if="zoomSupported"
         v-model="currentZoom"
         align-tabs="center"
-        class="position-relative mt-n16"
         style="z-index: 2"
         @update:model-value="applyZoom"
       >
@@ -94,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+  import { ref, watch, onBeforeUnmount } from 'vue';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   import type { CameraOption } from '@/shared/types/ImagePickerTypes';
   import type { CameraAdvancedSettings, TrackCapabilitiesExt } from '../types/CameraCaptureTypes';
@@ -134,10 +133,16 @@
           facingMode: { ideal: 'environment' },
         },
       });
+
+      const track = stream.getVideoTracks()[0];
+      const settings = track.getSettings();
+      const activeDeviceId = settings.deviceId;
+
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(d => d.kind === 'videoinput');
 
       stream.getTracks().forEach(track => track.stop());
+
       if (!videoDevices.length) {
         cameraError.value = t('imagePicker.camera.errors.noDevices');
         return;
@@ -146,7 +151,15 @@
         label: d.label || `Camera ${i + 1}`,
         value: d.deviceId,
       }));
-      selectedCamera.value = cameraOptions.value[0].value;
+      cameraOptions.value = videoDevices.map((d, i) => ({
+        label: d.label || `Camera ${i + 1}`,
+        value: d.deviceId,
+      }));
+
+      // 5. seleccionar la cámara activa (la trasera normalmente)
+      selectedCamera.value =
+        cameraOptions.value.find(c => c.value === activeDeviceId)?.value ??
+        cameraOptions.value[0].value;
     } catch {
       cameraError.value = t('imagePicker.camera.errors.fetchDevices');
     }
@@ -277,6 +290,9 @@
     emit('close');
   }
 
-  onMounted(initCameras);
+  defineExpose({
+    initCameras,
+  });
+
   onBeforeUnmount(stopStream);
 </script>

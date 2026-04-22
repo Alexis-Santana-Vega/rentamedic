@@ -98,8 +98,8 @@
     <ImageZoomDialog v-model="dialogActive" :images="allImages" :initial-index="selectedIndex" />
 
     <!-- Dialog de cámara -->
-    <v-dialog v-model="dialogCamera" :width="600" scrollable>
-      <CameraCapture @capture="onCameraCapture" @close="dialogCamera = false" />
+    <v-dialog v-model="dialogCamera" :width="600" scrollable @after-enter="onDialogOpened">
+      <CameraCapture ref="cameraRef" @capture="onCameraCapture" @close="dialogCamera = false" />
     </v-dialog>
 
     <!-- Input de archivo nativo (invisible) -->
@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onUnmounted, computed } from 'vue';
+  import { ref, onUnmounted, computed, nextTick } from 'vue';
   import type { NewImage } from '../types/ImagePickerTypes';
   import CameraCapture from './CameraCapture.vue';
   import ImagePreview from './ImagePreview.vue';
@@ -162,6 +162,7 @@
   ]);
   const selectedIndex = ref(0);
   const dialogActive = ref(false);
+  const cameraRef = ref();
 
   // ─── Acciones de cámara ───────────────────────────────────────────────
 
@@ -245,6 +246,11 @@
   function handleOpenPreview(globalIndex: number) {
     selectedIndex.value = globalIndex;
     dialogActive.value = true;
+  }
+
+  async function onDialogOpened() {
+    await nextTick();
+    cameraRef.value?.initCameras();
   }
 
   // ─── Limpieza ─────────────────────────────────────────────────────────
