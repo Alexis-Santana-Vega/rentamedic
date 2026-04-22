@@ -18,7 +18,7 @@
   withDefaults(
     defineProps<{
       title: string;
-      subtitle: string;
+      subtitle?: string;
       icon: string;
       color?: string;
       loading?: boolean;
@@ -26,6 +26,7 @@
     }>(),
     {
       color: 'primary',
+      subtitle: undefined,
     }
   );
 </script>

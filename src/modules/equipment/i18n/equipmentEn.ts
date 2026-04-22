@@ -1,3 +1,86 @@
 import type { EquipmentI18nSchema } from './equipmentEs';
 
-export const equipmentEn: EquipmentI18nSchema = {};
+export const equipmentEn: EquipmentI18nSchema = {
+  equipment: {
+    page: {
+      title: 'Medical Equipment',
+      subtitle: 'Medical equipment management',
+    },
+    filters: {
+      title: 'Filters',
+      category: 'Category',
+      status: 'Status',
+    },
+    summary: {
+      total: 'Total',
+      available: 'Available',
+      rented: 'Rented',
+      maintenance: 'Maintenance',
+    },
+    search: 'Search',
+    headers: {
+      barcode: 'Code',
+      name: 'Name',
+      category: 'Category',
+      stock: 'Stock',
+      status: 'Status',
+      actions: 'Actions',
+    },
+    actions: {
+      add: 'Add Product',
+      edit: 'Edit Product',
+      delete: 'Delete Product',
+      more: 'More actions',
+      removeSupplier: 'Remove Supplier',
+    },
+    dialog: {
+      titleNew: 'New Equipment',
+      titleEdit: 'Edit Equipment',
+      deleteTitle: 'Delete {name}',
+      deleteMessage: 'Do you want to delete this product?',
+      successMessage: 'Product deleted successfully',
+      errorMessage: 'Error deleting the product',
+      removeSupplierTitle: 'Remove {supplierName}',
+      removeSupplierMessage: 'Do you want to remove this supplier from the product?',
+      removeSupplierSuccessMessage: 'Supplier removed successfully',
+      removeSupplierErrorMessage: 'Error removing the supplier',
+    },
+    form: {
+      generalInfo: 'General Information',
+      prices: 'Prices',
+      stock: 'Stock / Inventory',
+      availability: 'Availability',
+      images: 'Equipment Images',
+      suppliers: 'Suppliers',
+
+      barcode: 'Barcode *',
+      category: 'Category *',
+      name: 'Equipment Name *',
+      shortDescription: 'Short Description *',
+      longDescription: 'Long Description *',
+      purchasePrice: 'Purchase Price *',
+      rentPrice: 'Rental Price (per hour) *',
+      maxStock: 'Max Stock *',
+      minStock: 'Min Stock *',
+      productOffer: 'Product Offer *',
+      active: 'Active Product',
+      autocompleteSuppliers: 'Select suppliers',
+    },
+    suppliers: {
+      headers: {
+        supplierName: 'Supplier',
+        name: 'Name Contact',
+        mobilePhone: 'Mobile Phone',
+        email: 'Email',
+        status: 'Status',
+        actions: 'Actions',
+      },
+    },
+    notifications: {
+      productCreated: 'Product created successfully',
+      productUpdated: 'Product updated successfully',
+      productDeleted: 'Product deleted successfully',
+      providerSaved: 'Provider saved successfully',
+    },
+  },
+};

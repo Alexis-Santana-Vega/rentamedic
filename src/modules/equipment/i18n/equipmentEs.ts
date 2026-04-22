@@ -1,3 +1,86 @@
-export const equipmentEs = {};
+export const equipmentEs = {
+  equipment: {
+    page: {
+      title: 'Equipo Médico',
+      subtitle: 'Gestión de equipo médico',
+    },
+    filters: {
+      title: 'Filtros',
+      category: 'Categoría',
+      status: 'Estado',
+    },
+    summary: {
+      total: 'Total',
+      available: 'Disponibles',
+      rented: 'Rentados',
+      maintenance: 'Mantenimiento',
+    },
+    search: 'Buscar',
+    headers: {
+      barcode: 'Código',
+      name: 'Nombre',
+      category: 'Categoría',
+      stock: 'Stock',
+      status: 'Estado',
+      actions: 'Acciones',
+    },
+    actions: {
+      add: 'Agregar Producto',
+      edit: 'Editar Producto',
+      delete: 'Eliminar Producto',
+      more: 'Más acciones',
+      removeSupplier: 'Eliminar Proveedor',
+    },
+    dialog: {
+      titleNew: 'Nuevo Equipo',
+      titleEdit: 'Editar Equipo',
+      deleteTitle: 'Eliminar {name}',
+      deleteMessage: '¿Desea eliminar este producto?',
+      successMessage: 'Producto eliminado con éxito',
+      errorMessage: 'Error al eliminar el producto',
+      removeSupplierTitle: 'Eliminar {supplierName}',
+      removeSupplierMessage: '¿Desea eliminar este proveedor del producto?',
+      removeSupplierSuccessMessage: 'Proveedor eliminado con éxito',
+      removeSupplierErrorMessage: 'Error al eliminar el proveedor',
+    },
+    form: {
+      generalInfo: 'Información General',
+      prices: 'Precios',
+      stock: 'Stock / Inventario',
+      availability: 'Disponibilidad',
+      images: 'Imágenes del Equipo',
+      suppliers: 'Proveedores',
+
+      barcode: 'Código de Barras *',
+      category: 'Categoría *',
+      name: 'Nombre Equipo *',
+      shortDescription: 'Descripción Corta *',
+      longDescription: 'Descripción Larga *',
+      purchasePrice: 'Precio Compra *',
+      rentPrice: 'Precio Renta (por hora) *',
+      maxStock: 'Stock Máximo *',
+      minStock: 'Stock Mínimo *',
+      productOffer: 'Oferta de Producto *',
+      active: 'Producto Activo',
+      autocompleteSuppliers: 'Seleccionar proveedores',
+    },
+    suppliers: {
+      headers: {
+        supplierName: 'Proveedor',
+        name: 'Nombre Contacto',
+        mobilePhone: 'Tel. Móvil',
+        email: 'Correo Electrónico',
+        status: 'Status',
+        actions: 'Acciones',
+      },
+    },
+    notifications: {
+      productCreated: 'Producto creado con éxito',
+      productUpdated: 'Producto editado con éxito',
+      productDeleted: 'Producto eliminado con éxito',
+      providerSaved: 'Proveedor guardado con éxito',
+    },
+  },
+};
 
 export type EquipmentI18nSchema = typeof equipmentEs;
