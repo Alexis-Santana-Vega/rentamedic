@@ -135,6 +135,26 @@ export const globalEs = {
       codeNotFound: 'Código no reconocido',
     },
   },
+  imagePicker: {
+    camera: {
+      label: 'Cámara {index}',
+      flash: 'Flash',
+      capture: 'Tomar foto',
+      save: 'Guardar imagen',
+      close: 'Cerrar cámara',
+      errors: {
+        notSupported: 'Tu navegador no soporta acceso a la cámara.',
+        noDevices: 'No se encontraron cámaras disponibles.',
+        fetchDevices: 'Error al obtener las cámaras.',
+        permissionDenied: 'Permisos de cámara denegados.',
+        startStream: 'Error al iniciar la cámara.',
+        capture: 'Error al capturar la imagen.',
+        noVideo: 'No hay un video activo para capturar.',
+        noImage: 'No hay imagen para guardar.',
+        zoom: 'Error al aplicar el zoom.',
+      },
+    },
+  },
 };
 
 export type GlobalI18nSchema = typeof globalEs;

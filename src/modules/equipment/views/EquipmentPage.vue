@@ -261,7 +261,7 @@
           <!-- Imágenes -->
           <v-col cols="12">
             <FormCard :title="t('equipment.form.images')" icon="mdi-image-outline">
-              <photo-picker-multiple />
+              <ImagePicker />
             </FormCard>
           </v-col>
 
@@ -368,6 +368,7 @@
   import IteratorHeader from '@/shared/components/IteratorHeader.vue';
   import ScannerPicker from '@/shared/components/ScannerPicker.vue';
   import { useSwal } from '@/shared/composables/useSwal';
+  import ImagePicker from '@/shared/components/ImagePicker.vue';
 
   const emit = defineEmits<{
     loadingChange: [isLoading: boolean];

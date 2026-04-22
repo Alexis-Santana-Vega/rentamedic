@@ -134,4 +134,25 @@ export const globalEn: GlobalI18nSchema = {
       codeNotFound: 'Code not recognized',
     },
   },
+
+  imagePicker: {
+    camera: {
+      label: 'Camera {index}',
+      flash: 'Flash',
+      capture: 'Take photo',
+      save: 'Save image',
+      close: 'Close camera',
+      errors: {
+        notSupported: 'Your browser does not support camera access.',
+        noDevices: 'No cameras found on your device.',
+        fetchDevices: 'Error fetching cameras.',
+        permissionDenied: 'Camera permission denied.',
+        startStream: 'Error starting the camera.',
+        capture: 'Error capturing the image.',
+        noVideo: 'No active video to capture.',
+        noImage: 'No image to save.',
+        zoom: 'Error applying zoom.',
+      },
+    },
+  },
 };
