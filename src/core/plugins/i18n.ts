@@ -2,6 +2,7 @@ import { globalI18nSchema } from '@/core/i18n/locales';
 import { authI18nSchema } from '@/modules/auth/i18n';
 import { categoryI18nSchema } from '@/modules/category/i18n';
 import { equipmentI18nSchema } from '@/modules/equipment/i18n';
+import { supplierI18nSchema } from '@/modules/supplier/i18n';
 import { userI18nSchema } from '@/modules/user/i18n';
 import { createI18n } from 'vue-i18n';
 import { en, es } from 'vuetify/locale';
@@ -15,6 +16,7 @@ const messages = {
       ...categoryI18nSchema.es,
       ...userI18nSchema.es,
       ...equipmentI18nSchema.es,
+      ...supplierI18nSchema.es,
     },
   },
   en: {
@@ -25,6 +27,7 @@ const messages = {
       ...categoryI18nSchema.en,
       ...userI18nSchema.en,
       ...equipmentI18nSchema.en,
+      ...supplierI18nSchema.en,
     },
   },
 };

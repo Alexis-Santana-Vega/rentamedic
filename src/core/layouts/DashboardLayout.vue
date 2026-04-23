@@ -101,6 +101,7 @@
     //{ title: 'Buscar', icon: 'mdi-magnify', to: { name: 'search' } },
     { title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipment' } },
     { title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'category' } },
+    { title: 'Proveedores', icon: 'mdi-handshake-outline', to: { name: 'supplier' } },
     //{ title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
     //{ title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },
     { title: 'Usuarios', icon: 'mdi-account-multiple-outline', to: { name: 'user' } },

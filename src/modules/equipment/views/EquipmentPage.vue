@@ -15,7 +15,7 @@
 
       <v-col cols="12">
         <TableCard
-          icon="mdi-hospital-box-outline"
+          icon="mdi-desktop-classic"
           :title="t('equipment.page.title')"
           :subtitle="t('equipment.page.subtitle')"
         >
