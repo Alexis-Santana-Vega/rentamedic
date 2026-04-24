@@ -1,83 +1,124 @@
-# renta-equipo
+# Rentamedic
 
-Scaffolded with Vuetify CLI.
+Rentamedic es una aplicación web desarrollada con **Vue.js 3** que facilita la renta y venta de equipo médico de forma rápida, segura y accesible. Conecta a proveedores con personas, clínicas y empresas que requieren equipos como concentradores de oxígeno, camas hospitalarias, monitores y otros dispositivos especializados, ya sea de manera temporal o permanente. A través de una plataforma intuitiva, los usuarios pueden explorar el catálogo, comparar opciones, consultar disponibilidad y gestionar pedidos en pocos pasos. Rentamedic reduce tiempos y costos, garantizando calidad, confiabilidad y soporte en cada transacción.
 
-## ❗️ Documentation
+## 🚀 Características
 
-- Primary docs: https://vuetifyjs.com/
-- Getting started guide: https://vuetifyjs.com/en/getting-started/installation/
-- Community support: https://community.vuetifyjs.com/
-- Issue tracker: https://issues.vuetifyjs.com/
+- 📦 **Catálogo de equipos** – Explora y filtra equipos médicos.
+- 🔍 **Consulta de disponibilidad** – Visualiza stock y estado en tiempo real.
+- 🛒 **Gestión de pedidos** – Realiza solicitudes de renta o compra fácilmente.
+- 🌍 **Internacionalización (i18n)** – Soporte multi-idioma.
+- 🎨 **UI moderna** – Construida con Vuetify 4.
+- 🔐 **Autenticación y autorización** – Acceso seguro con Pinia y Vue Router.
+- 📱 **Diseño responsivo** – Funciona en escritorio, tabletas y móviles.
 
-## 🧱 Stack
+## 🛠 Tecnologías utilizadas
 
-- Framework: Vue 3 + Vite
-- UI Library: Vuetify
-- Language: TypeScript
-- Package manager: yarn
+- **Frontend:** Vue.js 3 con Typescript (Composition API)
+- **UI Framework:** Vuetify 4
+- **Estado:** Pinia
+- **Rutas:** Vue Router 4
+- **Internacionalización:** Vue I18n (con configuración tipada)
+- **Build tool:** Vite
+- **Linting/Formato:** ESLint
 
-## 🧭 Start Here
-
-- Main entry: `src/main.ts`
-- Main app component: `src/App.vue`
-- Main styles: `src/styles/`
-- Plugin setup: `src/plugins/`
-
-## 📁 Project Structure
-
-- `src/main.ts` — application entry point
-- `src/App.vue` — root component
-- `src/components/` — reusable Vue components
-- `src/plugins/` — plugin registration and setup
-- `src/styles/` — global styles and theme settings
-- `public/` — static public files
-
-## ✨ Enabled Features
-
-- ESLint
-- Vuetify MCP
-- Pinia
-- Vue I18n
-- Vue Router
-
-## 💿 Install
-
-Use your selected package manager (yarn) to install dependencies:
-
-```bash
-yarn install
+## 📁 Estructura del proyecto
+```markdown
+rentamedic/
+├── core/                     # Funcionalidad base
+│   ├── components/           # Componentes de layout
+│   ├── i18n/                 # Configuración global de i18n (con tipado)
+│   ├── layouts/              # Layouts para Dashboard, Auth, etc.
+│   ├── plugins/              # Registro de Vuetify, Pinia, Router, i18n
+│   ├── router/               # Configuración de Router
+│   ├── stores/               # Configuración de tienda Pinia
+│   └── styles/               # Estilos y variables globales
+├── modules/                  # Módulos por funcionalidad
+│   ├── auth/                 # Autenticación
+│   ├── category/             # Categorías de equipos
+│   ├── equipment/            # Gestión de equipos
+│   ├── inbound/              # Entradas de inventario
+│   ├── outbound/             # Salidas (rentas/ventas)
+│   ├── supplier/             # Gestión de proveedores
+│   ├── user/                 # Usuarios
+│   └── public/               # Páginas públicas (inicio, acerca de...)
+│   └── (cada módulo tiene su propio i18n/, router/, types/, views/)
+├── shared/                   # Recursos reutilizables
+│   ├── components/           # Componentes UI compartidos
+│   ├── composables/          # Composición de lógica reutilizable
+│   ├── types/                # Tipos TypeScript globales
+│   └── utils/                # Funciones de ayuda
+└── assets/                   # Archivos estáticos (imágenes, fuentes, etc.)
 ```
 
-## 🚀 Quick Start
+## 📦 Instalación
 
-```bash
-yarn install
-yarn dev
-```
+Sigue estos pasos para configurar el proyecto localmente.
 
-## 🏗️ Build
+### Requisitos previos
 
-```bash
-yarn build
-```
+- **Node.js** (versión 18 o superior recomendada)
+- **Yarn** (gestor de paquetes)
 
-## 🧪 Available Scripts
+### Pasos
 
-- `yarn dev`
-- `yarn build`
-- `yarn preview`
-- `yarn build-only`
-- `yarn type-check`
-- `yarn lint`
-- `yarn lint:fix`
-- `yarn mcp`
-- `yarn mcp:revert`
+1. **Clonar el repositorio**
 
-## 💪 Support Vuetify Development
+   ```bash
+   git clone https://github.com/Alexis-Santana-Vega/rentamedic.git
+   cd rentamedic
+   ```
 
-This project uses Vuetify - an MIT licensed Open Source project. We are glad to welcome contributors and any support for ongoing development:
+2. **Instalar dependencias**
 
-- Contribute to Vuetify and ecosystem projects: https://github.com/vuetifyjs
-- Request enterprise support: https://support.vuetifyjs.com/
-- Sponsor on GitHub: https://github.com/sponsors/vuetifyjs
-- Support on Open Collective: https://opencollective.com/vuetify
+   ```bash
+   yarn install
+   ```
+
+3. **Configurar variables de entorno**
+
+   Crea un archivo `.env` en la raíz del proyecto si es necesario. Ejemplo:
+
+   ```env
+   VITE_WHATSAPP_PHONE_NUMBER=1234567890
+   ```
+
+4. **Ejecutar el servidor de desarrollo**
+
+   ```bash
+   yarn dev
+   ```
+
+5. **Construir para producción**
+
+   ```bash
+   yarn build
+   ```
+
+   Los archivos generados se guardarán en la carpeta `dist/`.
+
+6. **Previsualizar la versión de producción**
+
+   ```bash
+   yarn preview
+   ```
+
+7. **Ejecutar el linter**
+
+   ```bash
+   yarn lint
+   ```
+
+## 📜 Scripts disponibles
+
+| Comando          | Descripción                              |
+|------------------|------------------------------------------|
+| `yarn dev`       | Inicia el servidor de desarrollo         |
+| `yarn build`     | Genera la build de producción            |
+| `yarn preview`   | Previsualiza la build localmente         |
+| `yarn lint`      | Ejecuta ESLint sobre el código           |
+
+
+---
+
+**Rentamedic** – Soluciones médicas rápidas, seguras y accesibles.
