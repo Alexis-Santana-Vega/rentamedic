@@ -105,7 +105,7 @@
     { title: t('nav.category'), icon: 'mdi-tag-outline', to: { name: 'category' } },
     { title: t('nav.supplier'), icon: 'mdi-handshake-outline', to: { name: 'supplier' } },
     { title: t('nav.inbound'), icon: 'mdi-elevator-down', to: { name: 'inbound' } },
-    //{ title: t('nav.outbound'), icon: 'mdi-elevator-up', to: { name: 'outbound' } },
+    { title: t('nav.outbound'), icon: 'mdi-elevator-up', to: { name: 'outbound' } },
     { title: t('nav.user'), icon: 'mdi-account-multiple-outline', to: { name: 'user' } },
   ]);
   const openDrawer = (): void => {

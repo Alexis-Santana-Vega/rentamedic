@@ -2,14 +2,14 @@
   <v-container fluid>
     <TableCard
       icon="mdi-elevator-down"
-      :title="t('inbound.page.title')"
-      :subtitle="t('inbound.page.subtitle')"
+      :title="t('outbound.page.title')"
+      :subtitle="t('outbound.page.subtitle')"
     >
       <v-row density="compact">
         <v-col cols="12" sm="12" md="6" lg="8" xl="9">
           <IteratorHeader>
-            <v-btn-custom prepend-icon="mdi-plus" :block="smAndDown" @click="openInbound()">{{
-              t('inbound.actions.add')
+            <v-btn-custom prepend-icon="mdi-plus" :block="smAndDown" @click="openOutbound()">{{
+              t('outbound.actions.add')
             }}</v-btn-custom>
           </IteratorHeader>
         </v-col>
@@ -17,7 +17,7 @@
           <IteratorHeader>
             <v-text-field
               v-model="state.search"
-              :placeholder="t('inbound.search')"
+              :placeholder="t('outbound.search')"
               single-line
               hide-details
               clearable
@@ -27,8 +27,8 @@
         </v-col>
         <v-col cols="12">
           <v-data-table
-            :items="inboundItems"
-            :headers="inboundHeaders"
+            :items="outboundItems"
+            :headers="outboundHeaders"
             :search="state.search"
             :loading="state.loadingTable"
           >
@@ -38,19 +38,19 @@
             <template #item.folio="{ value }">
               <v-chip variant="text">{{ value }}</v-chip>
             </template>
-            <template #item.inboundType="{ value }">
-              <v-chip :prepend-icon="inboundTypeIcon(value)">{{ inboundTypeText(value) }}</v-chip>
+            <template #item.outboundType="{ value }">
+              <v-chip :prepend-icon="outboundTypeIcon(value)">{{ outboundTypeText(value) }}</v-chip>
             </template>
-            <template #item.invoiceAmount="{ value }">
+            <template #item.totalAmount="{ value }">
               <v-icon icon="mdi-cash" color="success" class="mr-2"></v-icon>
               <span>{{ `$ ${value}` }}</span>
             </template>
             <template #item.actions="{ item }">
               <TooltipButton
                 icon="mdi-open-in-new"
-                :text="t('inbound.actions.expand')"
+                :text="t('outbound.actions.expand')"
                 color="secondary"
-                @click="openInbound(item)"
+                @click="openOutbound(item)"
               ></TooltipButton>
             </template>
           </v-data-table>
@@ -58,21 +58,21 @@
       </v-row>
     </TableCard>
     <DialogCard
-      v-model="state.dialogInbound"
+      v-model="state.dialogOutbound"
       fullscreen
-      :icon="inboundDialogMeta.icon"
-      :title="inboundDialogMeta.title"
-      @close="closeInboundDialog()"
+      :icon="outboundDialogMeta.icon"
+      :title="outboundDialogMeta.title"
+      @close="closeOutboundDialog()"
     >
       <v-form v-model="state.validForm" @submit.prevent>
         <v-row>
           <v-col cols="12">
-            <FormCard icon="mdi-elevator-down" :title="t('inbound.form.equipmentTitle')">
+            <FormCard icon="mdi-elevator-down" :title="t('outbound.form.equipmentTitle')">
               <v-row>
                 <v-col cols="12" sm="12" md="2" lg="2" xl="2">
                   <v-text-field
-                    v-model="editedInbound.folio"
-                    :label="t('inbound.form.folio')"
+                    v-model="editedOutbound.folio"
+                    :label="t('outbound.form.folio')"
                     hint="No editable"
                     prepend-inner-icon="mdi-identifier"
                     :counter="false"
@@ -81,9 +81,9 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="2" offset-md="8" lg="2" xl="2">
                   <v-text-field
-                    v-model="editedInbound.datetime"
+                    v-model="editedOutbound.datetime"
                     type="datetime-local"
-                    :label="t('inbound.form.datetime')"
+                    :label="t('outbound.form.datetime')"
                     hint="No editable"
                     prepend-inner-icon="mdi-calendar-outline"
                     :counter="false"
@@ -92,61 +92,61 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4" lg="4" xl="4">
                   <v-select
-                    v-model="editedInbound.inboundType"
-                    :label="t('inbound.form.inboundType')"
-                    :items="inboundType"
-                    :rules="inboundRules.inboundType"
+                    v-model="editedOutbound.outboundType"
+                    :label="t('outbound.form.outboundType')"
+                    :items="outboundType"
+                    :rules="outboundRules.outboundType"
                     :readonly="isEditing"
                     @update:model-value="handleInputType"
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" lg="4" xl="4">
-                  <template v-if="editedInbound.inboundType === 'TRANSFER'">
+                  <template v-if="editedOutbound.outboundType === 'TRANSFER'">
                     <v-select
-                      v-model="editedInbound.originLocationId"
-                      :label="t('inbound.form.originLocation')"
+                      v-model="editedOutbound.destinationLocationId"
+                      :label="t('outbound.form.destinationLocation')"
                       prepend-inner-icon="mdi-map-marker-outline"
-                      :items="originLocations"
+                      :items="destinationLocations"
                       item-value="id"
                       item-title="name"
-                      :rules="inboundRules.originLocation"
+                      :rules="outboundRules.destinationLocation"
                       :readonly="isEditing"
                     ></v-select>
                   </template>
-                  <template v-else-if="editedInbound.inboundType === 'PURCHASE'">
+                  <template v-else-if="editedOutbound.outboundType === 'SALE'">
                     <v-select
-                      v-model="editedInbound.supplierId"
-                      :label="t('inbound.form.supplier')"
+                      v-model="editedOutbound.purchaserId"
+                      :label="t('outbound.form.purchaser')"
                       prepend-inner-icon="mdi-handshake-outline"
-                      :items="suppliers"
+                      :items="purchasers"
                       item-value="id"
                       item-title="name"
-                      :rules="inboundRules.supplier"
+                      :rules="outboundRules.purchaser"
                       :readonly="isEditing"
                     ></v-select>
                   </template>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" lg="4" xl="4">
                   <v-text-field
-                    v-model="editedInbound.invoiceAmount"
-                    :label="t('inbound.form.invoiceAmount')"
+                    v-model="editedOutbound.totalAmount"
+                    :label="t('outbound.form.totalAmount')"
                     inputmode="decimal"
                     prepend-inner-icon="mdi-cash"
                     prefix="$"
-                    :disabled="editedInbound.inboundType !== 'PURCHASE'"
-                    :rules="inboundRules.invoiceAmount"
+                    :disabled="editedOutbound.outboundType !== 'SALE'"
+                    :rules="outboundRules.totalAmount"
                     :readonly="isEditing"
                     :counter="false"
-                    @keydown="validateNumberInput($event, editedInbound.invoiceAmount)"
-                    @input="handleInvoiceAmountInput"
+                    @keydown="validateNumberInput($event, editedOutbound.totalAmount)"
+                    @input="handleTotalAmountInput"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="12" lg="12" xl="12">
                   <v-textarea
-                    v-model="editedInbound.note"
-                    :label="t('inbound.form.note')"
+                    v-model="editedOutbound.note"
+                    :label="t('outbound.form.note')"
                     prepend-inner-icon="mdi-text-long"
-                    :rules="inboundRules.note"
+                    :rules="outboundRules.note"
                     :readonly="isEditing"
                   ></v-textarea>
                 </v-col>
@@ -156,7 +156,7 @@
           <v-col cols="12">
             <FormCard icon="mdi-hospital-box-outline" title="Equipo a Recibir">
               <v-data-table
-                :items="editedInbound.equipment"
+                :items="editedOutbound.equipment"
                 :headers="tableHeaders"
                 items-per-page="-1"
                 hide-default-footer
@@ -165,7 +165,7 @@
                 <template #item.barcode="{ index }">
                   <v-text-field
                     :ref="el => setInputRef(index, 'barcode', el)"
-                    v-model="editedInbound.equipment[index].barcode"
+                    v-model="editedOutbound.equipment[index].barcode"
                     density="compact"
                     base-color="surface"
                     placeholder="Código de barras"
@@ -173,7 +173,7 @@
                     :readonly="isEditing"
                     :rules="tableRules.barcode"
                     :prepend-icon="
-                      editedInbound.equipment[index].codeValid
+                      editedOutbound.equipment[index].codeValid
                         ? 'mdi-check-circle-outline'
                         : 'mdi-alert-circle-outline'
                     "
@@ -185,7 +185,7 @@
                 <template #item.quantity="{ index }">
                   <v-text-field
                     :ref="el => setInputRef(index, 'quantity', el)"
-                    v-model="editedInbound.equipment[index].quantity"
+                    v-model="editedOutbound.equipment[index].quantity"
                     base-color="surface"
                     placeholder="Cantidad"
                     type="number"
@@ -202,7 +202,7 @@
                 <template #item.actions="{ item }">
                   <TooltipButton
                     icon="mdi-delete-outline"
-                    :text="t('inbound.actions.discardEquipment')"
+                    :text="t('outbound.actions.discardEquipment')"
                     color="error"
                     :disabled="isEditing"
                     @click="deleteEquipment(item)"
@@ -212,13 +212,13 @@
             </FormCard>
           </v-col>
           <v-col v-if="!isEditing" cols="12">
-            <v-btn-custom :disabled="!isValidForm" @click="saveInbound">{{
-              t('inbound.actions.generateInbound')
+            <v-btn-custom :disabled="!isValidForm" @click="saveOutbound">{{
+              t('outbound.actions.generateOutbound')
             }}</v-btn-custom>
           </v-col>
         </v-row>
       </v-form>
-      <v-tooltip v-if="!isEditing" :text="t('inbound.actions.scanEquipment')">
+      <v-tooltip v-if="!isEditing" :text="t('outbound.actions.scanEquipment')">
         <template #activator="{ props: activatorProps }">
           <v-btn
             icon="mdi-barcode-scan"
@@ -231,7 +231,7 @@
           ></v-btn>
         </template>
       </v-tooltip>
-      <v-tooltip v-if="!isEditing" :text="t('inbound.actions.addEquipmentManually')">
+      <v-tooltip v-if="!isEditing" :text="t('outbound.actions.addEquipmentManually')">
         <template #activator="{ props: activatorProps }">
           <v-btn
             icon="mdi-plus"
@@ -266,16 +266,16 @@
   import { useDisplay } from 'vuetify';
   import type {
     EquipmentScanner,
-    InboundForm,
-    InboundLightResponse,
+    OutboundForm,
+    OutboundLightResponse,
     LocationLightResponse,
-    SupplierLightResponse,
-  } from '../types/InboundTypes';
+    PurchaserLightResponse,
+  } from '../types/OutboundTypes';
   import {
     mockEquipmentProducts,
-    mockInbounds,
+    mockOutbounds,
     mockLocationsLight,
-    mockSuppliersLight,
+    mockPurchasersLight,
   } from '../MockData';
   import {
     formatCurrencyValue,
@@ -288,29 +288,29 @@
     loadingChange: [isLoading: boolean];
   }>();
 
-  function inboundTypeIcon(inboundType: string): string {
+  function outboundTypeIcon(outboundType: string): string {
     const map: Record<string, string> = {
-      PURCHASE: 'mdi-handshake-outline',
+      SALE: 'mdi-sale-outline',
       TRANSFER: 'mdi-map-marker-outline',
     };
-    return map[inboundType] ?? 'default';
+    return map[outboundType] ?? 'default';
   }
 
-  function inboundTypeText(inboundType: string): string {
+  function outboundTypeText(outboundType: string): string {
     const map: Record<string, string> = {
-      PURCHASE: t('inbound.type.purchase'),
-      TRANSFER: t('inbound.type.transfer'),
+      SALE: t('outbound.type.sale'),
+      TRANSFER: t('outbound.type.transfer'),
     };
-    return map[inboundType] ?? '';
+    return map[outboundType] ?? '';
   }
 
-  const mapInboundToLight = (inbound: InboundForm): InboundLightResponse => {
+  const mapOutboundToLight = (outbound: OutboundForm): OutboundLightResponse => {
     return {
-      id: inbound.id,
-      folio: inbound.folio,
-      datetime: inbound.datetime,
-      inboundType: inbound.inboundType,
-      invoiceAmount: inbound.invoiceAmount,
+      id: outbound.id,
+      folio: outbound.folio,
+      datetime: outbound.datetime,
+      outboundType: outbound.outboundType,
+      totalAmount: outbound.totalAmount,
     };
   };
 
@@ -322,33 +322,33 @@
 
   const state = reactive({
     search: '',
-    loadingInboundForm: false,
-    dialogInbound: false,
+    loadingOutboundForm: false,
+    dialogOutbound: false,
     dialogScanner: false,
     loadingTable: false,
     validForm: false,
   });
-  const inboundItems = ref<InboundLightResponse[]>([]);
-  const defaultInbound: InboundForm = {
+  const outboundItems = ref<OutboundLightResponse[]>([]);
+  const defaultOutbound: OutboundForm = {
     id: '',
     folio: '',
-    inboundType: 'PURCHASE',
+    outboundType: 'SALE',
     datetime: new Date().toISOString().slice(0, 16),
-    invoiceAmount: '',
-    originLocationId: '',
-    supplierId: '',
+    totalAmount: '',
+    destinationLocationId: '',
+    purchaserId: '',
     note: '',
     equipment: [],
   };
-  const editedInbound = ref<InboundForm>({ ...defaultInbound });
-  const editedInboundIndex = ref(-1);
+  const editedOutbound = ref<OutboundForm>({ ...defaultOutbound });
+  const editedOutboundIndex = ref(-1);
 
-  const inboundRules = computed(() => ({
-    inboundType: [v.required()],
-    invoiceAmount: [v.required()],
+  const outboundRules = computed(() => ({
+    outboundType: [v.required()],
+    totalAmount: [v.required()],
     note: [v.maxLength(300)],
-    originLocation: [v.required()],
-    supplier: [v.required()],
+    destinationLocation: [v.required()],
+    purchaser: [v.required()],
   }));
 
   const tableRules = computed(() => ({
@@ -356,14 +356,14 @@
     quantity: [v.required(), v.minNumber(1), v.maxNumber(30)],
   }));
 
-  const inboundHeaders = computed(() => [
-    { key: 'folio', title: t('inbound.headers.folio'), sortable: false },
-    { key: 'inboundType', title: t('inbound.headers.inboundType'), sortable: false },
-    { key: 'datetime', title: t('inbound.headers.datetime'), sortable: false },
-    { key: 'invoiceAmount', title: t('inbound.headers.invoiceAmount'), sortable: false },
+  const outboundHeaders = computed(() => [
+    { key: 'folio', title: t('outbound.headers.folio'), sortable: false },
+    { key: 'outboundType', title: t('outbound.headers.outboundType'), sortable: false },
+    { key: 'datetime', title: t('outbound.headers.datetime'), sortable: false },
+    { key: 'totalAmount', title: t('outbound.headers.totalAmount'), sortable: false },
     {
       key: 'actions',
-      title: t('inbound.headers.actions'),
+      title: t('outbound.headers.actions'),
       sortable: false,
       align: 'end' as const,
       width: '40',
@@ -373,54 +373,54 @@
   const tableHeaders = computed(() => [
     {
       key: 'barcode',
-      title: t('inbound.form.headers.barcode'),
+      title: t('outbound.form.headers.barcode'),
       value: 'barcode',
       sortable: false,
       width: '300',
     },
-    { key: 'name', title: t('inbound.form.headers.name'), sortable: false },
-    { key: 'quantity', title: t('inbound.form.headers.quantity'), sortable: false, width: '200' },
+    { key: 'name', title: t('outbound.form.headers.name'), sortable: false },
+    { key: 'quantity', title: t('outbound.form.headers.quantity'), sortable: false, width: '200' },
     {
       key: 'actions',
-      title: t('inbound.form.headers.actions'),
+      title: t('outbound.form.headers.actions'),
       sortable: false,
       align: 'center' as const,
       width: '40',
     },
   ]);
 
-  const inboundType = computed(() => [
-    { value: 'TRANSFER', title: t('inbound.type.transfer') },
-    { value: 'PURCHASE', title: t('inbound.type.purchase') },
+  const outboundType = computed(() => [
+    { value: 'TRANSFER', title: t('outbound.type.transfer') },
+    { value: 'SALE', title: t('outbound.type.sale') },
   ]);
 
-  const suppliers = ref<SupplierLightResponse[]>([]);
-  const originLocations = ref<LocationLightResponse[]>([]);
+  const purchasers = ref<PurchaserLightResponse[]>([]);
+  const destinationLocations = ref<LocationLightResponse[]>([]);
 
-  const isEditing = computed(() => editedInboundIndex.value !== -1);
+  const isEditing = computed(() => editedOutboundIndex.value !== -1);
 
-  const inboundDialogMeta = computed(() => {
+  const outboundDialogMeta = computed(() => {
     return {
-      title: isEditing.value ? t('inbound.dialog.titleEdit') : t('inbound.dialog.titleNew'),
+      title: isEditing.value ? t('outbound.dialog.titleEdit') : t('outbound.dialog.titleNew'),
       icon: isEditing.value ? 'mdi-circle-edit-outline' : 'mdi-plus',
       color: isEditing.value ? 'secondary' : 'primary',
     };
   });
 
   const isValidForm = computed(() => {
-    const length = editedInbound.value.equipment.length > 0;
+    const length = editedOutbound.value.equipment.length > 0;
     let codeValid = false;
     if (length) {
-      codeValid = editedInbound.value.equipment.every(i => i.codeValid === true);
+      codeValid = editedOutbound.value.equipment.every(i => i.codeValid === true);
     }
     return state.validForm && length && codeValid;
   });
 
-  const closeInboundDialog = () => {
-    state.dialogInbound = false;
+  const closeOutboundDialog = () => {
+    state.dialogOutbound = false;
     nextTick(() => {
-      editedInbound.value = Object.assign({}, defaultInbound);
-      editedInboundIndex.value = -1;
+      editedOutbound.value = Object.assign({}, defaultOutbound);
+      editedOutboundIndex.value = -1;
     });
   };
 
@@ -432,29 +432,29 @@
       quantity: 1,
       codeValid: false,
     };
-    editedInbound.value.equipment.push(newRegister);
+    editedOutbound.value.equipment.push(newRegister);
   };
 
   const handleEnter = async (e: Event, index: number, field: string) => {
     e.preventDefault();
     if (field === 'barcode') {
-      const barcode = editedInbound.value.equipment[index].barcode;
+      const barcode = editedOutbound.value.equipment[index].barcode;
       if (!barcode) return;
       const equipmentScanner: EquipmentScanner | undefined = mockEquipmentProducts.find(
         m => m.barcode === barcode
       );
       if (!equipmentScanner) {
-        toast('warning', t('inbound.notifications.equipmentNotFound'));
+        toast('warning', t('outbound.notifications.equipmentNotFound'));
         return;
       }
-      editedInbound.value.equipment[index] = { ...equipmentScanner, quantity: 1 };
+      editedOutbound.value.equipment[index] = { ...equipmentScanner, quantity: 1 };
       await focusInput(index, 'quantity');
     }
   };
 
   const handleEnterStock = async (e: KeyboardEvent, index: number) => {
     if (e.key === 'Enter' || e.key === 'Tab') {
-      if (editedInbound.value.equipment.length === index + 1) {
+      if (editedOutbound.value.equipment.length === index + 1) {
         createNewRegister();
       }
       e.preventDefault();
@@ -463,9 +463,9 @@
   };
 
   const handleInputType = () => {
-    editedInbound.value.invoiceAmount = '0';
-    editedInbound.value.supplierId = '';
-    editedInbound.value.originLocationId = '';
+    editedOutbound.value.totalAmount = '0';
+    editedOutbound.value.purchaserId = '';
+    editedOutbound.value.destinationLocationId = '';
   };
 
   const openScanner = () => {
@@ -477,39 +477,39 @@
   };
 
   const deleteEquipment = (item: EquipmentScanner) => {
-    editedInbound.value.equipment = editedInbound.value.equipment.filter(
+    editedOutbound.value.equipment = editedOutbound.value.equipment.filter(
       i => i.barcode !== item.barcode
     );
-    toast('success', t('inbound.notifications.entryDiscarded'));
+    toast('success', t('outbound.notifications.outboundDiscarded'));
   };
 
   const initialize = () => {
-    inboundItems.value = mockInbounds.map(mapInboundToLight);
-    suppliers.value.push(...mockSuppliersLight);
+    outboundItems.value = mockOutbounds.map(mapOutboundToLight);
+    purchasers.value.push(...mockPurchasersLight);
     state.loadingTable = true;
     setTimeout(() => {
-      suppliers.value = mockSuppliersLight;
-      originLocations.value = mockLocationsLight;
+      purchasers.value = mockPurchasersLight;
+      destinationLocations.value = mockLocationsLight;
       state.loadingTable = false;
     }, 1000);
   };
-  const openInbound = (item?: InboundLightResponse): void => {
+  const openOutbound = (item?: OutboundLightResponse): void => {
     if (item) {
       emit('loadingChange', true);
       setTimeout(() => {
-        editedInboundIndex.value = inboundItems.value.indexOf(item);
-        editedInbound.value = { ...mockInbounds.find(i => i.id === item.id)! };
-        state.dialogInbound = true;
+        editedOutboundIndex.value = outboundItems.value.indexOf(item);
+        editedOutbound.value = { ...mockOutbounds.find(i => i.id === item.id)! };
+        state.dialogOutbound = true;
         emit('loadingChange', false);
       }, 1000);
     } else {
-      state.dialogInbound = true;
+      state.dialogOutbound = true;
     }
   };
 
-  const handleInvoiceAmountInput = (event: Event) => {
+  const handleTotalAmountInput = (event: Event) => {
     const input = event.target as HTMLInputElement;
-    editedInbound.value.invoiceAmount = formatCurrencyValue(input.value);
+    editedOutbound.value.totalAmount = formatCurrencyValue(input.value);
   };
 
   const handleScanner = (barcode: string) => {
@@ -518,20 +518,20 @@
       m => m.barcode === barcode
     );
     if (!equipmentScanner) {
-      toast('warning', t('inbound.notifications.equipmentNotFound'));
+      toast('warning', t('outbound.notifications.equipmentNotFound'));
       return;
     }
-    editedInbound.value.equipment.push({ ...equipmentScanner, quantity: 1 });
+    editedOutbound.value.equipment.push({ ...equipmentScanner, quantity: 1 });
     toast('success', equipmentScanner.name);
   };
 
-  const saveInbound = () => {
-    state.loadingInboundForm = true;
+  const saveOutbound = () => {
+    state.loadingOutboundForm = true;
     setTimeout(() => {
-      const lightResult = mapInboundToLight(editedInbound.value);
-      inboundItems.value.push({ ...lightResult, folio: 'INB-0006' });
-      state.loadingInboundForm = false;
-      closeInboundDialog();
+      const lightResult = mapOutboundToLight(editedOutbound.value);
+      outboundItems.value.push({ ...lightResult, folio: 'INB-0006' });
+      state.loadingOutboundForm = false;
+      closeOutboundDialog();
     }, 1000);
   };
 

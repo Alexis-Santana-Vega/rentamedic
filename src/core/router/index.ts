@@ -9,6 +9,7 @@ import authRoutes from '@/modules/auth/router';
 import categoryRoutes from '@/modules/category/router';
 import equipmentRoutes from '@/modules/equipment/router';
 import inboundRoutes from '@/modules/inbound/router';
+import outboundRoutes from '@/modules/outbound/router';
 import supplierRoutes from '@/modules/supplier/router';
 import userRoutes from '@/modules/user/router';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -26,6 +27,7 @@ const router = createRouter({
         ...equipmentRoutes,
         ...supplierRoutes,
         ...inboundRoutes,
+        ...outboundRoutes,
       ],
     },
     /*
