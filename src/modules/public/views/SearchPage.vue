@@ -328,9 +328,13 @@
                           >
                         </v-col>
                         <v-col cols="12">
-                          <v-btn-custom prepend-icon="mdi-cart-variant" block color="tertiary">{{
-                            t('public.search.dialog.buyNow')
-                          }}</v-btn-custom>
+                          <v-btn-custom
+                            prepend-icon="mdi-cart-variant"
+                            block
+                            color="tertiary"
+                            :disabled="!controls.saleFormValid"
+                            >{{ t('public.search.dialog.buyNow') }}</v-btn-custom
+                          >
                         </v-col>
                       </v-row>
                     </v-form>
@@ -426,8 +430,16 @@
   const editedSaleForm = ref<SaleForm>({ ...defaultSaleForm });
 
   const baseFormRules = computed(() => ({
-    rentalDays: [v.required(), v.minNumber(1), v.maxNumber(90)],
-    quantity: [v.required(), v.minNumber(1), v.maxNumber(10)],
+    rentalDays: [
+      v.required(),
+      v.minNumber(1, t('public.search.dialog.rentalDays')),
+      v.maxNumber(90, t('public.search.dialog.rentalDays')),
+    ],
+    quantity: [
+      v.required(),
+      v.minNumber(1, t('public.search.dialog.quantity')),
+      v.maxNumber(10, t('public.search.dialog.quantity')),
+    ],
   }));
 
   const rentOption = computed(() => editedProduct.value.status.includes('RENTA'));
