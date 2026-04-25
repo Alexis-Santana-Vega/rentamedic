@@ -5,7 +5,7 @@
         <v-progress-linear :active="isActive" color="primary" indeterminate></v-progress-linear>
       </template>
       <v-row class="h-100">
-        <v-col cols="0" sm="0" md="6" lg="6" xl="6" class="h-100 pa-4">
+        <v-col v-if="!smAndDown" cols="0" sm="0" md="6" lg="6" xl="6" class="h-100 pa-4">
           <div
             class="bg-image d-flex flex-column align-center justify-center rounded-lg h-100 text-white"
           >
@@ -44,7 +44,9 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+  import { useDisplay } from 'vuetify';
   const { t } = useTypedLocale();
+  const { smAndDown } = useDisplay();
   const state = reactive({
     isLoading: false,
   });

@@ -59,7 +59,7 @@
     // Aquí iría la lógica para manejar la verificación del OTP
     console.log('Verificando OTP con:', otpModel.value);
     setTimeout(() => {
-      router.push({ name: 'summary' });
+      router.push({ name: 'equipment' });
       emit('loadingChange', false);
     }, 2000);
   };

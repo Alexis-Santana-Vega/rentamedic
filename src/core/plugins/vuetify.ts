@@ -77,6 +77,16 @@ export default createVuetify({
         class: 'font-weight-black text-medium-emphasis',
       },
     },
+    VCarousel: {
+      VBtn: {
+        variant: 'text',
+      },
+    },
+    VTabs: {
+      color: 'primary',
+      sliderTransition: 'grow',
+      alignTabs: 'center',
+    },
     VProgressLinear: {
       color: 'primary',
     },
@@ -124,6 +134,8 @@ export default createVuetify({
     },
     VPagination: {
       density: 'comfortable',
+      variant: 'flat',
+      rounded: 'lg',
     },
     VRow: {
       density: 'comfortable',

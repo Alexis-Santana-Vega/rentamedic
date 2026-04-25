@@ -70,6 +70,10 @@ export const globalEs = {
     outbound: 'Salidas',
     user: 'Usuario',
     logout: 'Cerrar Sesión',
+    home: 'Inicio',
+    search: 'Buscar',
+    about: 'Nosotros',
+    contact: 'Contacto',
   },
 
   layout: {

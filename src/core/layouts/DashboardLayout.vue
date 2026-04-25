@@ -15,65 +15,14 @@
       <ThemeButton />
       <RoleButton />
       <LanguageButton />
-      <v-btn icon="mdi-cart-outline" @click="state.drawerCart = !state.drawerCart"></v-btn>
     </template>
   </v-app-bar>
-  <v-navigation-drawer v-model="state.drawer" :rail="state.rail" order="1">
-    <div class="d-flex align-center py-1 ga-2 pl-2">
-      <v-img src="@/assets/images/logo.webp" width="48" height="48"></v-img>
-      <div class="font-weight-black text-title-large text-medium-emphasis w-100">RentaMedic</div>
-    </div>
-    <v-list rounded="0">
-      <v-list-item
-        v-for="(item, index) in menuItems"
-        :key="index"
-        :title="item.title"
-        :to="item.to"
-        :active="item.to.name === router.name"
-        rounded="0"
-      >
-        <template #prepend>
-          <v-icon :icon="item.icon" class="ml-1"></v-icon>
-        </template>
-        <v-tooltip
-          v-if="state.rail"
-          activator="parent"
-          location="end"
-          :text="item.title"
-        ></v-tooltip>
-      </v-list-item>
-    </v-list>
-    <template #append>
-      <div class="d-flex align-center py-1 pr-1 pl-2 ga-3">
-        <div>
-          <div
-            class="rounded-circle font-weight-black bg-tertiary d-flex align-center justify-center"
-            style="height: 48px; width: 48px"
-          >
-            AS
-          </div>
-        </div>
-        <div style="white-space: nowrap">
-          <div class="font-weight-bold text-medium-emphasis">Alexis Santana</div>
-          <div class="text-label-medium text-medium-emphasis">Admin</div>
-        </div>
-      </div>
-      <v-list rounded="0">
-        <v-list-item rounded="0" @click="logout">
-          <template #prepend>
-            <v-icon icon="mdi-logout" class="ml-1"></v-icon>
-          </template>
-          <v-list-item-title>{{ t('nav.logout') }}</v-list-item-title>
-          <v-tooltip
-            v-if="state.rail"
-            activator="parent"
-            location="end"
-            text="Cerrar sesión"
-          ></v-tooltip>
-        </v-list-item>
-      </v-list>
-    </template>
-  </v-navigation-drawer>
+  <LayoutDrawer
+    v-model="state.drawer"
+    :rail="state.rail"
+    :menu-items="menuItems"
+    :route-name="router.name"
+  />
   <router-view v-slot="{ Component, route }" @loading-change="state.isLoading = $event">
     <v-fade-transition mode="out-in">
       <component :is="Component" :key="route.path"></component>
@@ -88,12 +37,13 @@
   import { useRoute } from 'vue-router';
   import RoleButton from '../components/RoleButton.vue';
   import LanguageButton from '../components/LanguageButton.vue';
+  import LayoutDrawer from '../components/LayoutDrawer.vue';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   const router = useRoute();
   const { mdAndDown } = useDisplay();
   const state = reactive({
     drawer: true,
-    drawerCart: false,
+    drawerCart: true,
     rail: true,
     isLoading: false,
   });
@@ -116,7 +66,6 @@
       state.rail = !state.rail;
     }
   };
-  const logout = (): void => {};
   const initialize = () => {
     state.rail = !mdAndDown.value;
     state.drawer = !mdAndDown.value;

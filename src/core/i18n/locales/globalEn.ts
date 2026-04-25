@@ -69,6 +69,10 @@ export const globalEn: GlobalI18nSchema = {
     outbound: 'Outbounds',
     user: 'Users',
     logout: 'Logout',
+    home: 'Home',
+    search: 'Search',
+    about: 'About Us',
+    contact: 'Contact',
   },
 
   layout: {

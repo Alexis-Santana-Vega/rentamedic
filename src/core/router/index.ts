@@ -10,6 +10,7 @@ import categoryRoutes from '@/modules/category/router';
 import equipmentRoutes from '@/modules/equipment/router';
 import inboundRoutes from '@/modules/inbound/router';
 import outboundRoutes from '@/modules/outbound/router';
+import publicRoutes from '@/modules/public/router';
 import supplierRoutes from '@/modules/supplier/router';
 import userRoutes from '@/modules/user/router';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -17,6 +18,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    ...publicRoutes,
     ...authRoutes,
     {
       path: '/dashboard',

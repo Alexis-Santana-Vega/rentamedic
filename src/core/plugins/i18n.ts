@@ -4,6 +4,7 @@ import { categoryI18nSchema } from '@/modules/category/i18n';
 import { equipmentI18nSchema } from '@/modules/equipment/i18n';
 import { inboundI18nSchema } from '@/modules/inbound/i18n';
 import { outboundI18nSchema } from '@/modules/outbound/i18n';
+import { publicI18nSchema } from '@/modules/public/i18n';
 import { supplierI18nSchema } from '@/modules/supplier/i18n';
 import { userI18nSchema } from '@/modules/user/i18n';
 import { createI18n } from 'vue-i18n';
@@ -21,6 +22,7 @@ const messages = {
       ...supplierI18nSchema.es,
       ...inboundI18nSchema.es,
       ...outboundI18nSchema.es,
+      ...publicI18nSchema.es,
     },
   },
   en: {
@@ -34,6 +36,7 @@ const messages = {
       ...supplierI18nSchema.en,
       ...inboundI18nSchema.en,
       ...outboundI18nSchema.en,
+      ...publicI18nSchema.en,
     },
   },
 };
