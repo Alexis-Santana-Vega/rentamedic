@@ -163,4 +163,24 @@ export const globalEn: GlobalI18nSchema = {
       },
     },
   },
+
+  cart: {
+    title: 'My Cart',
+    empty: 'Your cart is empty',
+    rentSection: 'Equipment for Rent',
+    saleSection: 'Equipment for Sale',
+    subtotalRent: 'Rent Subtotal',
+    subtotalSale: 'Sale Subtotal',
+    total: 'Total',
+    checkout: 'Rent medical equipment',
+    unit: 'u.',
+    equipment: {
+      singular: 'item',
+      plural: 'items',
+    },
+    day: {
+      singular: 'day',
+      plural: 'days',
+    },
+  },
 };

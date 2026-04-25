@@ -3,7 +3,7 @@
     <section class="py-16 bg-surface">
       <v-container>
         <div class="text-display-medium font-weight-black text-center text-medium-emphasis">
-          Buscar Equipo
+          {{ t('public.search.pageTitle') }}
         </div>
       </v-container>
     </section>
@@ -12,10 +12,10 @@
         <v-col cols="12" sm="12" md="12" lg="3" xl="3">
           <v-row>
             <v-col cols="12">
-              <TableCard icon="mdi-magnify" title="Buscar">
+              <TableCard icon="mdi-magnify" :title="t('public.search.searchCard')">
                 <v-form @submit.prevent="initialize">
                   <v-text-field
-                    label="Buscar por Nombre"
+                    :label="t('public.search.searchByName')"
                     hide-details
                     single-line
                     clearable
@@ -24,7 +24,7 @@
               </TableCard>
             </v-col>
             <v-col cols="12">
-              <TableCard icon="mdi-filter-variant" title="Filtros">
+              <TableCard icon="mdi-filter-variant" :title="t('public.search.filtersCard')">
                 <template #append>
                   <v-btn color="tertiary" variant="tonal" icon="mdi-sync" size="small"></v-btn>
                 </template>
@@ -32,8 +32,8 @@
                   <v-col cols="12">
                     <v-select
                       v-model="filter.ofert"
-                      label="Oferta de Producto"
-                      :items="['Renta', 'Venta']"
+                      :label="t('public.search.offerLabel')"
+                      :items="[t('public.search.offerRent'), t('public.search.offerSale')]"
                       chips
                       multiple
                       clearable
@@ -42,7 +42,7 @@
                   <v-col cols="12">
                     <v-select
                       v-model="filter.categories"
-                      label="Categorías"
+                      :label="t('public.search.categoriesLabel')"
                       :items="[
                         'Neonatal',
                         'Respiratorio',
@@ -56,10 +56,16 @@
                     ></v-select>
                   </v-col>
                   <v-col cols="6">
-                    <v-text-field v-model="filter.price[0]" label="Precio Mínimo"></v-text-field>
+                    <v-text-field
+                      v-model="filter.price[0]"
+                      :label="t('public.search.priceMin')"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="6">
-                    <v-text-field v-model="filter.price[1]" label="Precio Máximo"></v-text-field>
+                    <v-text-field
+                      v-model="filter.price[1]"
+                      :label="t('public.search.priceMax')"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-range-slider
@@ -80,7 +86,7 @@
         </v-col>
         <v-col cols="12" sm="12" md="12" lg="9" xl="9">
           <div class="text-medium-emphasis font-weight-black text-title-large text-center">
-            Resultados de la búsqueda
+            {{ t('public.search.resultsTitle') }}
           </div>
           <v-divider class="mt-2 mb-4"></v-divider>
           <v-data-iterator
@@ -115,18 +121,26 @@
                       :class="`mouse-enter-point ${!smAndDown || 'pa-2'}`"
                       @click="openDialogProduct(item.raw)"
                     >
-                      <div class="text-caption font-weight-medium text-medium-emphasis">
+                      <div class="text-label-medium font-weight-medium text-medium-emphasis">
                         {{ item.raw.brand }}
                       </div>
-                      <div class="text-body-2 font-weight-bold">{{ item.raw.name }}</div>
+                      <div class="text-body-large font-weight-bold">{{ item.raw.name }}</div>
                       <div class="mt-2 d-flex flex-column ga-2">
-                        <div v-if="item.raw.rentPrice">
-                          <v-chip color="success" density="comfortable">Renta</v-chip>
-                          <span class="ml-2 font-weight-medium">{{ item.raw.rentPrice }}</span>
+                        <div v-if="item.raw.rentalPrice">
+                          <v-chip color="secondary" density="comfortable">{{
+                            t('public.search.chipRent')
+                          }}</v-chip>
+                          <span class="ml-2 font-weight-medium">{{
+                            formatCurrency(item.raw.rentalPrice)
+                          }}</span>
                         </div>
-                        <div v-if="item.raw.sellingPrice">
-                          <v-chip color="tertiary" density="comfortable">Venta</v-chip>
-                          <span class="ml-2 font-weight-medium">{{ item.raw.sellingPrice }}</span>
+                        <div v-if="item.raw.salePrice">
+                          <v-chip color="tertiary" density="comfortable">{{
+                            t('public.search.chipSale')
+                          }}</v-chip>
+                          <span class="ml-2 font-weight-medium">{{
+                            formatCurrency(item.raw.salePrice)
+                          }}</span>
                         </div>
                       </div>
                     </v-card-text>
@@ -178,7 +192,7 @@
       <DialogCard
         v-model="controls.dialogProduct"
         width="1000"
-        title="Detalles"
+        :title="t('public.search.dialog.title')"
         icon="mdi-hospital-box-outline"
         @close="closeDialogProduct()"
       >
@@ -198,8 +212,8 @@
               <v-slide-group-item v-for="(img, im) in editedProduct.photoUrl" :key="im">
                 <div class="mb-4 mr-2">
                   <ImagePreview
-                    height="100"
-                    width="100"
+                    :height="smAndDown ? '100' : '150'"
+                    :width="smAndDown ? '100' : '150'"
                     :src="img"
                     @open-preview="handleOpenPreview(im)"
                   />
@@ -211,37 +225,67 @@
             icon="mdi-tag-outline"
             :title="editedProduct.name"
             :subtitle="editedProduct.brand"
+            class="w-100"
           >
             <div class="text-body-medium font-weight-bold text-medium-emphasis">
               {{ editedProduct.shortDescription }}
             </div>
             <v-tabs v-model="controls.tab" grow>
-              <v-tab value="RENTA">Renta</v-tab>
-              <v-tab value="VENTA">Venta</v-tab>
+              <v-tab v-if="rentOption" value="RENTA">{{ t('public.search.dialog.tabRent') }}</v-tab>
+              <v-tab v-if="saleOption" value="VENTA">{{ t('public.search.dialog.tabSale') }}</v-tab>
             </v-tabs>
             <v-tabs-window v-model="controls.tab" class="pt-6">
               <v-tabs-window-item value="RENTA">
                 <div class="d-flex align-center justify-center">
                   <div style="width: 400px">
-                    <v-form @submit.prevent="handleBuyOption">
+                    <v-form v-model="controls.rentFormValid" @submit.prevent="handleRentOption">
                       <v-row density="compact">
+                        <v-col
+                          cols="12"
+                          class="text-title-large text-medium-emphasis font-weight-black mb-4"
+                        >
+                          {{ t('public.search.dialog.costPerDay') }}
+                          {{ formatCurrency(editedProduct.rentalPrice) }}
+                        </v-col>
                         <v-col cols="12">
                           <v-text-field
-                            label="Cantidad de horas"
+                            v-model="editedRentForm.quantity"
+                            :label="t('public.search.dialog.quantity')"
                             prepend-icon="mdi-minus"
                             append-icon="mdi-plus"
+                            :rules="baseFormRules.quantity"
+                            @click:prepend="editedRentForm.quantity--"
+                            @click:append="editedRentForm.quantity++"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12">
                           <v-text-field
-                            label="Tiempo de Renta (horas)"
+                            v-model="editedRentForm.rentalDays"
+                            :label="t('public.search.dialog.rentalDays')"
                             prepend-icon="mdi-minus"
                             append-icon="mdi-plus"
+                            prepend-inner-icon="mdi-calendar-outline"
+                            :rules="baseFormRules.rentalDays"
+                            @click:prepend="editedRentForm.rentalDays--"
+                            @click:append="editedRentForm.rentalDays++"
                           ></v-text-field>
                         </v-col>
+                        <v-col cols="12" class="mb-2">
+                          <v-btn-custom
+                            prepend-icon="mdi-cart-arrow-down"
+                            variant="outlined"
+                            block
+                            type="submit"
+                            :disabled="!controls.rentFormValid"
+                            >{{ t('public.search.dialog.addToCart') }}</v-btn-custom
+                          >
+                        </v-col>
                         <v-col cols="12">
-                          <v-btn-custom prepend-icon="mdi-cart-arrow-down" block type="submit"
-                            >Rentar Equipo</v-btn-custom
+                          <v-btn-custom
+                            prepend-icon="mdi-cart-variant"
+                            block
+                            :disabled="!controls.rentFormValid"
+                            >{{ t('public.search.dialog.rentNow') }}</v-btn-custom
                           >
                         </v-col>
                       </v-row>
@@ -252,23 +296,41 @@
               <v-tabs-window-item value="VENTA">
                 <div class="d-flex align-center justify-center">
                   <div style="width: 400px">
-                    <v-form @submit.prevent="handleRentOption">
+                    <v-form v-model="controls.saleFormValid" @submit.prevent="handleBuyOption">
                       <v-row density="compact">
-                        <v-col cols="12">
-                          <v-text-field
-                            label="Cantidad"
-                            prepend-icon="mdi-minus"
-                            append-icon="mdi-plus"
-                          ></v-text-field>
+                        <v-col
+                          cols="12"
+                          class="text-title-large text-medium-emphasis font-weight-black mb-4"
+                        >
+                          {{ t('public.search.dialog.salePrice') }}
+                          {{ formatCurrency(editedProduct.salePrice) }}
                         </v-col>
                         <v-col cols="12">
+                          <v-text-field
+                            v-model="editedSaleForm.quantity"
+                            :label="t('public.search.dialog.quantity')"
+                            prepend-icon="mdi-minus"
+                            append-icon="mdi-plus"
+                            :rules="baseFormRules.quantity"
+                            @click:prepend="editedSaleForm.quantity--"
+                            @click:append="editedSaleForm.quantity++"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" class="mb-2">
                           <v-btn-custom
                             prepend-icon="mdi-cart-arrow-down"
-                            color="tertiary"
+                            variant="outlined"
                             block
+                            color="tertiary"
                             type="submit"
-                            >Comprar Equipo</v-btn-custom
+                            :disabled="!controls.saleFormValid"
+                            >{{ t('public.search.dialog.addToCart') }}</v-btn-custom
                           >
+                        </v-col>
+                        <v-col cols="12">
+                          <v-btn-custom prepend-icon="mdi-cart-variant" block color="tertiary">{{
+                            t('public.search.dialog.buyNow')
+                          }}</v-btn-custom>
                         </v-col>
                       </v-row>
                     </v-form>
@@ -278,7 +340,7 @@
             </v-tabs-window>
             <v-divider class="mt-4"></v-divider>
             <div class="text-title-large font-weight-black my-2 text-medium-emphasis">
-              Descripción
+              {{ t('public.search.dialog.description') }}
             </div>
             <div class="text-justify">
               {{ editedProduct.longDescription }}
@@ -290,14 +352,24 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { nextTick, onMounted, reactive, ref } from 'vue';
+  import { computed, nextTick, onMounted, reactive, ref } from 'vue';
   import { useDisplay } from 'vuetify';
   import DialogCard from '@/shared/components/DialogCard.vue';
   import TableCard from '@/shared/components/TableCard.vue';
   import ImagePreview from '@/shared/components/ImagePreview.vue';
   import ImageZoomDialog from '@/shared/components/ImageZoomDialog.vue';
-  import type { SearchLightResponse, SearchResponse } from '../types/publicTypes';
+  import type {
+    RentForm,
+    SaleForm,
+    SearchLightResponse,
+    SearchResponse,
+  } from '../types/publicTypes';
+  import type { CartItem } from '@/shared/types/CartTypes';
   import { mockSearch } from '../MockData';
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+  import { createValidators } from '@/shared/utils/validators';
+  import { formatCurrency } from '@/shared/utils/formatters';
+  import { useSwal } from '@/shared/composables/useSwal';
   const { smAndDown } = useDisplay();
   const products = ref<SearchLightResponse[]>([]);
   const controls = reactive({
@@ -308,16 +380,21 @@
     tab: 'RENTA',
     dialogActive: false,
     selectedIndex: 0,
+    rentFormValid: false,
+    saleFormValid: false,
   });
   const filter = reactive({
     ofert: [],
     categories: [],
     price: [0, 0],
   });
-
   const emit = defineEmits<{
     loadingChange: [isLoading: boolean];
   }>();
+
+  const { t } = useTypedLocale();
+  const v = createValidators(t);
+  const { toast } = useSwal();
 
   const defaultProduct: SearchResponse = {
     id: '',
@@ -325,13 +402,36 @@
     name: '',
     longDescription: '',
     photoUrl: [],
-    rentPrice: '',
-    sellingPrice: '',
+    rentalPrice: 0,
+    salePrice: 0,
     shortDescription: '',
     status: [],
   };
 
   const editedProduct = ref<SearchResponse>({ ...defaultProduct });
+
+  const defaultRentForm: RentForm = {
+    productId: '',
+    quantity: 1,
+    rentalDays: 1,
+  };
+
+  const editedRentForm = ref<RentForm>({ ...defaultRentForm });
+
+  const defaultSaleForm: SaleForm = {
+    productId: '',
+    quantity: 1,
+  };
+
+  const editedSaleForm = ref<SaleForm>({ ...defaultSaleForm });
+
+  const baseFormRules = computed(() => ({
+    rentalDays: [v.required(), v.minNumber(1), v.maxNumber(90)],
+    quantity: [v.required(), v.minNumber(1), v.maxNumber(10)],
+  }));
+
+  const rentOption = computed(() => editedProduct.value.status.includes('RENTA'));
+  const saleOption = computed(() => editedProduct.value.status.includes('VENTA'));
 
   /** Methods */
   const mapSearchToLight = (search: SearchResponse): SearchLightResponse => {
@@ -340,8 +440,8 @@
       name: search.name,
       brand: search.brand,
       photoUrl: search.photoUrl,
-      rentPrice: search.rentPrice,
-      sellingPrice: search.sellingPrice,
+      rentalPrice: search.rentalPrice,
+      salePrice: search.salePrice,
       status: search.status,
     };
   };
@@ -356,15 +456,18 @@
     emit('loadingChange', true);
     setTimeout(() => {
       editedProduct.value = { ...mockSearch.find(i => i.id === item.id)! };
+      if (rentOption.value) controls.tab = 'RENTA';
+      else controls.tab = 'VENTA';
       emit('loadingChange', false);
       controls.dialogProduct = true;
     }, 1000);
   };
-
   const closeDialogProduct = () => {
     controls.dialogProduct = false;
     nextTick(() => {
       editedProduct.value = Object.assign({}, defaultProduct);
+      editedRentForm.value = Object.assign({}, defaultRentForm);
+      editedSaleForm.value = Object.assign({}, defaultSaleForm);
       controls.selectedIndex = 0;
     });
   };
@@ -374,9 +477,59 @@
     controls.dialogActive = true;
   }
 
-  function handleRentOption() {}
+  function handleRentOption() {
+    const cartItem: CartItem = {
+      id: crypto.randomUUID(),
+      productId: editedProduct.value.id,
+      productName: editedProduct.value.name,
+      type: 'RENTA',
+      quantity: editedRentForm.value.quantity,
+      rentalPrice: editedProduct.value.rentalPrice,
+      rentalDays: editedRentForm.value.rentalDays,
+      photoUrl: editedProduct.value.photoUrl[0],
+    };
+    const storedCart = localStorage.getItem('rentaMedicCartItems');
+    const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
+    const existingItemIndex = cart.findIndex(
+      item => item.productId === cartItem.productId && item.type === cartItem.type
+    );
 
-  function handleBuyOption() {}
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += cartItem.quantity;
+      cart[existingItemIndex].rentalDays! += cartItem.rentalDays!;
+    } else {
+      cart.push(cartItem);
+    }
+    localStorage.setItem('rentaMedicCartItems', JSON.stringify(cart));
+    toast('success', t('public.search.notifications.addedToCart', { name: cartItem.productName }));
+    closeDialogProduct();
+  }
+
+  function handleBuyOption() {
+    const cartItem: CartItem = {
+      id: crypto.randomUUID(),
+      productId: editedProduct.value.id,
+      productName: editedProduct.value.name,
+      type: 'VENTA',
+      quantity: editedSaleForm.value.quantity,
+      salePrice: editedProduct.value.salePrice,
+      photoUrl: editedProduct.value.photoUrl[0],
+    };
+    const storedCart = localStorage.getItem('rentaMedicCartItems');
+    const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
+    const existingItemIndex = cart.findIndex(
+      item => item.productId === cartItem.productId && item.type === cartItem.type
+    );
+
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += cartItem.quantity;
+    } else {
+      cart.push(cartItem);
+    }
+    localStorage.setItem('rentaMedicCartItems', JSON.stringify(cart));
+    toast('success', t('public.search.notifications.addedToCart', { name: cartItem.productName }));
+    closeDialogProduct();
+  }
 
   onMounted(initialize);
 </script>

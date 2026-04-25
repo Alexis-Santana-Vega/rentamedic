@@ -125,6 +125,40 @@ export const publicEs = {
         },
       },
     },
+    search: {
+      pageTitle: 'Buscar Equipo',
+      searchCard: 'Buscar',
+      searchByName: 'Buscar por Nombre',
+      filtersCard: 'Filtros',
+      offerLabel: 'Oferta de Producto',
+      offerRent: 'Renta',
+      offerSale: 'Venta',
+      categoriesLabel: 'Categorías',
+      priceMin: 'Precio Mínimo',
+      priceMax: 'Precio Máximo',
+      resultsTitle: 'Resultados de la búsqueda',
+
+      chipRent: 'Renta',
+      chipSale: 'Venta',
+
+      dialog: {
+        title: 'Detalles',
+        tabRent: 'Renta',
+        tabSale: 'Venta',
+        costPerDay: 'Costo por Día:',
+        salePrice: 'Precio de Venta:',
+        quantity: 'Cantidad',
+        rentalDays: 'Tiempo de Renta (Días)',
+        addToCart: 'Añadir al Carrito',
+        rentNow: 'Rentar Equipo Ahora',
+        buyNow: 'Comprar Equipo Ahora',
+        description: 'Descripción',
+      },
+
+      notifications: {
+        addedToCart: '{name} agregado al carrito',
+      },
+    },
   },
 };
 

@@ -125,5 +125,39 @@ export const publicEn: PublicI18nSchema = {
         },
       },
     },
+    search: {
+      pageTitle: 'Search Equipment',
+      searchCard: 'Search',
+      searchByName: 'Search by Name',
+      filtersCard: 'Filters',
+      offerLabel: 'Product Offer',
+      offerRent: 'Rent',
+      offerSale: 'Sale',
+      categoriesLabel: 'Categories',
+      priceMin: 'Minimum Price',
+      priceMax: 'Maximum Price',
+      resultsTitle: 'Search results',
+
+      chipRent: 'Rent',
+      chipSale: 'Sale',
+
+      dialog: {
+        title: 'Details',
+        tabRent: 'Rent',
+        tabSale: 'Sale',
+        costPerDay: 'Cost per Day:',
+        salePrice: 'Sale Price:',
+        quantity: 'Quantity',
+        rentalDays: 'Rental Period (Days)',
+        addToCart: 'Add to Cart',
+        rentNow: 'Rent Equipment Now',
+        buyNow: 'Buy Equipment Now',
+        description: 'Description',
+      },
+
+      notifications: {
+        addedToCart: '{name} added to cart',
+      },
+    },
   },
 };

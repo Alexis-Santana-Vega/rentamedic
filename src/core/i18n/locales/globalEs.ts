@@ -163,6 +163,25 @@ export const globalEs = {
       },
     },
   },
+  cart: {
+    title: 'Mi Carrito',
+    empty: 'Tu carrito está vacío',
+    rentSection: 'Equipos para Renta',
+    saleSection: 'Equipos para Compra',
+    subtotalRent: 'Subtotal Renta',
+    subtotalSale: 'Subtotal Compra',
+    total: 'Total',
+    checkout: 'Rentar equipo médico',
+    unit: 'u.',
+    equipment: {
+      singular: 'equipo',
+      plural: 'equipos',
+    },
+    day: {
+      singular: 'día',
+      plural: 'días',
+    },
+  },
 };
 
 export type GlobalI18nSchema = typeof globalEs;
